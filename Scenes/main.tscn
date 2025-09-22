@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://7hkqwse4codi"]
+[gd_scene load_steps=7 format=3 uid="uid://7hkqwse4codi"]
 
 [ext_resource type="Texture2D" uid="uid://ct1b5lsd7puei" path="res://Backgrounds/purple.png" id="1_jjgbg"]
 [ext_resource type="Script" uid="uid://d4i40ttopgo5p" path="res://Scripts/player.gd" id="2_8gbba"]
 [ext_resource type="Texture2D" uid="uid://clupddywx4h7v" path="res://Graphics/playerShip1_red.png" id="2_bo1nx"]
-[ext_resource type="Script" uid="uid://ctm2ng16wwyec" path="res://Scripts/laser.gd" id="4_kry3j"]
-[ext_resource type="Texture2D" uid="uid://cep6gorkxqcf7" path="res://Graphics/Lasers/laserGreen12.png" id="5_21xkr"]
+[ext_resource type="PackedScene" uid="uid://bvevj6effvjke" path="res://Scenes/laser.tscn" id="4_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://dko0bwic4w8xj" path="res://Scenes/enemy.tscn" id="5_21xkr"]
+[ext_resource type="Script" uid="uid://d2s8mk3tru520" path="res://Scripts/enemy_spawner.gd" id="6_6bp64"]
 
 [node name="Main" type="Node2D"]
 
@@ -17,15 +18,17 @@ metadata/_edit_lock_ = true
 [node name="Player" type="Node2D" parent="."]
 position = Vector2(280, 840)
 script = ExtResource("2_8gbba")
+laser_tscn = ExtResource("4_jjvhh")
 metadata/_edit_group_ = true
 
 [node name="ShipGraphic" type="Sprite2D" parent="Player"]
 texture = ExtResource("2_bo1nx")
 
-[node name="Laser" type="Node2D" parent="."]
-position = Vector2(140, 641)
-script = ExtResource("4_kry3j")
-metadata/_edit_group_ = true
+[node name="EnemySpawner" type="Node2D" parent="."]
+script = ExtResource("6_6bp64")
+enemy_tscn = ExtResource("5_21xkr")
 
-[node name="LaserGraphic" type="Sprite2D" parent="Laser"]
-texture = ExtResource("5_21xkr")
+[node name="Timer" type="Timer" parent="EnemySpawner"]
+autostart = true
+
+[connection signal="timeout" from="EnemySpawner/Timer" to="EnemySpawner" method="spawn_enemy"]
